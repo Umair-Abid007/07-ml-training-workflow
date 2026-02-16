@@ -1,0 +1,24 @@
+name: ML Training CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - run: pip install -r requirements.txt
+
+      # Run unit tests first
+      - run: pytest
+
+      # Train model only if tests pass
+      - run: python src/train.py
